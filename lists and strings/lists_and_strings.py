@@ -1,10 +1,8 @@
 # №1
-# Реализуйте алгоритм, определяющий, все ли символы в строке встречаются
-# только один раз. А если при этом запрещено использование дополнительных
-# структур данных?
+# Is Unique: Implement an algorithm to determine if a string has all unique characters. What if you
+# cannot use additional data structures?
 
 
-# 82
 def check_uniqe_letters(s):
     return len(s) == len(set(s))
 
@@ -22,8 +20,8 @@ def check_uniqe_letters_sort(s):
 
 
 # №2
-# Для двух строк напишите метод, определяющий, является ли одна строка
-# перестановкой другой .
+# Check Permutation: Given two strings, write a method
+# to decide if one is a permutation of the other.
 
 
 def check_permutations(s1, s2):
@@ -41,16 +39,18 @@ def check_permutations(s1, s2):
 
 
 # №3
-#  Напишите метод, заменяющий все пробелы в строке символами • %20 •.
+# URLify: Write a method to replace all spaces in a string with '%20'. You may assume that the string
+# has sufficient space at the end to hold the additional characters, and that you are given the "true"
+# length of the string. (Note: If implementing in Java, please use a character array so that you can
+# perform this operation in place.)
 def replace_space(s):
     return s.strip().replace(" ", "%20")
 
 
 # №4
-# Напишите функцию, которая проверяет, является ли заданная строка перестановкой палиндрома. (Палиндром - слово или фраза, одинаково читающиеся
-# в прямом и обратном направлении; перестановка - строка, содержащая те
-# же символы в другом порядке.) Палиндром не ограничивается словами из
-# словаря.
+# Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
+# A palindrome is a word or phrase that is the same forwards and backwards. A permutation
+# is a rearrangement of letters. The palindrome does not need to be limited to just dictionary words.
 def check_permutations_palindrome(s):
     letters = {}
     s = s.replace(" ", "")
@@ -68,10 +68,9 @@ def check_permutations_palindrome(s):
 
 
 # №5
-# Существуют три вида модифицирующих операций со строками: вставка
-# символа, удаление символа и замена символа. Напишите функцию, которая
-# проверяет, находятся ли две строки на расстоянии одной модификации (или
-# нуля модификаций).
+# One Away: There are three types of edits that can be performed on strings: insert a character,
+# remove a character, or replace a character. Given two strings, write a function to check if they are
+# one edit (or zero edits) away.
 
 
 def check_insert_delete_replace(s1, s2):
@@ -80,45 +79,46 @@ def check_insert_delete_replace(s1, s2):
     delete: len - 1
     replace: same len
     """
-    if len(s1) == len(s2):
+
+    def one_edit_replace(s1, s2):
         flag = False
-        for let1, let2 in zip(s1, s2):
-            if let1 != let2:
+        for a, b in zip(s1, s2):
+            if a != b:
                 if flag:
                     return False
                 flag = True
-    else:
-        if abs(len(s1) - len(s2)) == 1:
-            i1 = 0
-            i2 = 0
-            flag = False
-            min_word = min(len(s1), len(s2))
-            max_word = max(len(s1), len(s2))
-            while i1 != max_word and i2 != max_word:
-                if not flag:
-                    if i1 == min_word or i2 == min_word:
-                        return True
-                if s1[i1] != s2[i2]:
-                    if flag:
-                        return False
-                    flag = True
-                    if len(s1) > len(s2):
-                        i1 += 1
-                    else:
-                        i2 += 1
-                i1 += 1
-                i2 += 1
+        return True
+
+    def one_edit_insert(s1, s2):
+        i = 0
+        j = 0
+        while i < len(s1) and j < len(s2):
+            if s1[i] != s2[j]:
+                if i != j:
+                    return False
+                i += 1
+            else:
+                i += 1
+                j += 1
+        return True
+
+    result = False
+    if len(s1) == len(s2):
+        result = one_edit_replace(s1, s2)
+    elif abs(len(s1) - len(s2)) == 1:
+        if len(s1) > len(s2):
+            result = one_edit_insert(s1, s2)
         else:
-            return False
-    return True
+            result = one_edit_insert(s2, s1)
+    return result
 
 
 # №6
 
-# Реализуйте метод для выполнения простейшего сжатия строк с использованием
-# счетчика повторяющихся символов. Например, строка aabcccccaaa превращается
-# в a2b1c5a3. Если 'сжатая' строка не становится короче исходной, то метод
-# возвращает исходную строку.
+# String Compression: Implement a method to perform basic string compression using the counts
+# of repeated characters. For example, the string aabcccccaaa would become a2blc5a3, If the
+# "compressed" string would not become smaller than the original string, your method should return
+# the original string. You can assume the string has only uppercase and lowercase letters (a - z).
 
 
 def shorten_string(s):
@@ -139,10 +139,8 @@ def shorten_string(s):
 
 
 # №7
-# меется изображение, представленное матрицей NxN; каждый пиксел
-# представлен 4 байтами. Напишите метод для поворота изображения на
-# 90 градусов.
-# Удастся ли вам выполнить эту операцию «На месте»?
+# Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
+# bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
 def rotate_matrix(mtx):
     ans = []
     for line in zip(*mtx):
@@ -154,8 +152,10 @@ import copy
 
 
 # №8
-# Напишите алгоритм, реализующий следующее условие: если элемент матрицы
-# MxN равен О, то весь столбец и вся строка обнуляются.
+# Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0,
+# its entire row and column are set to 0.
+
+
 def make_null_matrix(mtx):
     answer = copy.deepcopy(mtx)
 
@@ -176,10 +176,11 @@ def make_null_matrix(mtx):
 
 
 # №9
-# Допустим, что существует метод isSubstring, проверяющий, является ли
-# одно слово подстрокой другого. Для двух строк sl и s2 напишите код, который
-# проверяет, получена ли строка s2 циклическим сдвигом sl, используя
-# только один вызов метода isSubstring
+# 9 String Rotation; Assume you have a method isSubs t rin g which checks if one word is a substring
+# of another. Given two strings, si and s2, write code to check if s2 is a rotation of si using only one
+# call to isSubs t rin g [e.g., "wate r bottle " is a rotation oP'erbottlewat")
+
+
 def check_shifted_substring(s1, s2):
     if len(s1) == len(s2):
         return s2 in s1 + s1
