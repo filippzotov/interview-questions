@@ -153,20 +153,36 @@ def check_palindrome_list(LL):
 # node of the first linked list is the exact same node (by reference) as the jt h node of the second
 # linked list, then they are intersecting.
 def find_intersection(LL1, LL2):
-    len_ll1 = 0
-    len_ll2 = 0
-    cur = LL1.head
-    while cur.next:
-        len_ll1 += 1
-        cur = cur.next
-    cur = LL2.head
-    while cur.next:
-        len_ll2 += 1
-        cur = cur.next
+    def get_len_and_last(LL):
+        count = 0
+        cur = LL.head
+        while cur.next:
+            count += 1
+            cur = cur.next
+        return (count, cur)
 
-    # if len_ll1 > len_ll2:
+    def get_intersection_node(bigger, smaller, dif):
+        cur1 = bigger.head
+        cur2 = smaller.head
+        for _ in range(dif):
+            cur1 = cur1.next
 
-    # print(len_ll1, len_ll2)
+        while cur1 != cur2:
+            cur1 = cur1.next
+            cur2 = cur2.next
+        return cur1
+
+    lenLL1, last1 = get_len_and_last(LL1)
+    lenLL2, last2 = get_len_and_last(LL2)
+    if last1 != last2:
+        return False
+    dif = abs(lenLL1 - lenLL2)
+    if lenLL1 > lenLL2:
+        ans = get_intersection_node(LL1, LL2, dif)
+    else:
+        ans = get_intersection_node(LL2, LL1, dif)
+
+    return ans
 
 
 # 8
@@ -193,7 +209,7 @@ def find_loop_start(LL):
 
 
 if __name__ == "__main__":
-    # vals = [1, 2, 1, 2, 5, 5, 7, 1, 1, 1, 7, 7, 6, 6]
+    vals = [1, 2, 1, 2, 5, 5, 7, 1, 1, 1, 7, 7, 6, 6]
 
     # LL = Simple_LL(vals)
     # print(LL)
@@ -220,15 +236,15 @@ if __name__ == "__main__":
     # LL2 = Simple_LL(vals2)
 
     # print(sum_lists(LL1, LL2))
-    vals1 = [3, 1, 5, 9, 7, 2, 1]
-    vals2 = [4, 6]
-    LL1 = Simple_LL(vals1)
-    LL2 = Simple_LL(vals2)
-    cur = LL2.head
-    cur = cur.next
-    f1 = LL1.head.next.next.next.next
-    print(f1)
-    cur.next = f1
-    print(LL1)
-    print(LL2)
-    find_intersection(LL1, LL2)
+    # vals1 = [3, 1, 5, 9, 7, 2, 1]
+    # vals2 = [4, 6]
+    # LL1 = Simple_LL(vals1)
+    # LL2 = Simple_LL(vals2)
+    # cur = LL2.head
+    # cur = cur.next
+    # f1 = LL1.head.next.next.next
+    # print(f1)
+    # cur.next = f1
+    # print(LL1)
+    # print(LL2)
+    # print(find_intersection(LL1, LL2).val)
